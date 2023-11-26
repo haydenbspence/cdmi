@@ -1,1 +1,1 @@
-# cdmi
+# Common Data Model Image
