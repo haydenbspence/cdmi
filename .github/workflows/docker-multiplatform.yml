@@ -1,39 +1,39 @@
 name: ci
 
 on:
-  push:
-    branches:
-      - "main"
+ push:
+   branches:
+     - "main"
 
 env:
-  IMAGE_NAME: "cdmi"
+ IMAGE_NAME: "cdmi"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+ build:
+   runs-on: ubuntu-latest
+   strategy:
+     matrix:
+       platform:
+         - linux/amd64
+         - linux/arm64
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+     - name: Set up Docker Buildx
+       uses: docker/setup-buildx-action@v1
 
-      - name: Login to GitHub Container Registry (GHCR)
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_TOKEN }}
+     - name: Login to GitHub Container Registry (GHCR)
+       uses: docker/login-action@v1
+       with:
+         registry: ghcr.io
+         username: ${{ github.repository_owner }}
+         password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: haydenbspence/cdmi:latest
+     - name: Build and push
+       uses: docker/build-push-action@v2
+       with:
+         context: .
+         platforms: linux/amd64,linux/arm64
+         push: true
+         tags: ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
