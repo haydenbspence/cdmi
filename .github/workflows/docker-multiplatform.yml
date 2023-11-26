@@ -10,7 +10,8 @@ on:
 env:
  ROOT_CONTAINER: "ubuntu:22.04"
  GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
- IMAGE_NAME: "broadsea-foundation" # Hardcoded image name
+ IMAGE_NAME: "cdmi"
+ IMAGE_TAG: "latest"
  OHDSI_USER: "Odysseus"
  OHDSI_UID: "1000"
  OHDSI_GID: "100"
@@ -22,7 +23,7 @@ jobs:
     fail-fast: false
     matrix:
       platform:
-        - linux/amd64
+        - linux/arm/v7
         - linux/arm64
   steps:
     - name: Checkout
@@ -55,7 +56,7 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=registry,ref=${{ env.IMAGE_REF_LOWER }}:cache
         cache-to: type=inline,ignore-error=true
-        outputs: type=image,name=${{ env.IMAGE_REF_LOWER }}:${{ steps.meta.outputs.version }},push-by-digest=true,name-canonical=true,push=true
+        outputs: type=image,name=${{ env.IMAGE_REF_LOWER }}:{{ env.IMAGE_TAG }},push-by-digest=true,name-canonical=true,push=true
         build-args: |
           ROOT_CONTAINER=${{ env.ROOT_CONTAINER }}
           OHDSI_USER=${{ env.OHDSI_USER }}
