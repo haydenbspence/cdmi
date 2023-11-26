@@ -16,8 +16,6 @@ jobs:
        platform:
          - linux/amd64
          - linux/arm64
-         - linux/arm/v7
-         - linux/arm/v8
    steps:
      - name: Checkout
        uses: actions/checkout@v2
@@ -35,7 +33,7 @@ jobs:
      - name: Build and push
        uses: docker/build-push-action@v2
        with:
-         context: .
+        context: .
          platforms: linux/amd64,linux/arm64
          push: true
          tags: haydenbspence/cdmi:latest
